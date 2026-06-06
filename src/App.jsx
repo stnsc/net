@@ -3,8 +3,8 @@ import './App.css'
 function App() {
   return (
     <div className="container">
-      <h1>Work in Progress</h1>
-      <p>Something great is coming soon. Stay tuned.</p>
+      <h1>In Development</h1>
+      <p>This page is currently under active development.</p>
     </div>
   )
 }
