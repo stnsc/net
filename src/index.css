@@ -254,6 +254,7 @@ body {
   bottom: 0;
   width: 100%;
   height: 100svh;
+  overflow: hidden;
   color: white;
 
   h1 {
@@ -296,161 +297,162 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   overflow: hidden;
 
   @media (max-width: 900px) { padding: 60px; }
-  @media (max-width: 600px) { padding: 40px; justify-content: flex-start; }
+  @media (max-width: 600px) { padding: 40px; }
   @media (max-width: 400px) { padding: 24px; }
 }
 
-.menu-items {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.menu-item {
-  cursor: pointer;
-  position: relative;
-  padding-left: 2.4em;
-}
-
-.menu-prefix {
-  position: absolute;
-  left: 0;
-  opacity: 0;
-  transform: translateX(-6px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.menu-item:hover .menu-prefix {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.content-wrapper .detail-title {
-  line-height: 1.2;
-  margin-top: 0;
-}
-
 .back-btn {
-  position: absolute;
-  top: 100px;
-  right: 100px;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 10px;
-
-  @media (max-width: 900px) { top: 60px; right: 60px; letter-spacing: 6px; }
-  @media (max-width: 600px) { top: 40px; right: 40px; letter-spacing: 4px; }
-  @media (max-width: 400px) { top: 24px; right: 24px; font-size: 10px; letter-spacing: 2px; }
+  display: none; /* replaced by the back band in DetailPage */
 }
 
 .detail-content {
-  flex: 1;
-  width: 100%;
-  margin-top: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none; /* replaced by detail-page-content */
 }
 
 .intro {
-  flex: 1;
+  flex: none;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
-
-  @media (max-width: 600px) {
-    flex: none;
-    flex-direction: column;
-    align-items: flex-start;
-  }
 }
 
 .intro-text {
-  flex: 2;
   display: flex;
   flex-direction: column;
-  text-align: right;
-
-  @media (max-width: 600px) {
-    flex: none;
-    text-align: left;
-    margin-top: 1em;
-  }
+  text-align: left;
+  margin-top: 20px;
 }
 
 .intro-greeting {
-  flex: 1;
   margin-top: 30px;
   padding-right: 20px;
+}
+
+/* ── Scrolling menu bands ── */
+.menu-bands {
+  position: absolute;
+  left: -20%;
+  bottom: 6%;
+  width: 140%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transform: rotate(-12deg);
+  z-index: 2;
+  pointer-events: none;
+  margin-bottom: 10%;
 
   @media (max-width: 600px) {
-    flex: none;
-    margin-top: 0;
-    padding-right: 0;
+    bottom: 4%;
+    gap: 4px;
   }
 }
 
-/* ── Mobile detail layout: vertical title on the left ── */
-@media (max-width: 600px) {
-  .detail-layer {
-    flex-direction: row;
-    align-items: stretch;
-    padding: 0;
-  }
-
-  .detail-layer .detail-title {
-    writing-mode: vertical-lr;
-    flex: none;
-    margin: 0;
-    padding: 56px 12px 24px 24px;
-    line-height: 1;
-  }
-
-  .detail-layer .detail-content {
-    flex: 1;
-    margin: 56px 24px 24px 0;
-  }
+.menu-band {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: none;
+  border: none;
+  /* Vertical padding gives descenders/ascenders room before the clip edge */
+  padding: 10px 0;
+  cursor: pointer;
+  pointer-events: all;
+  transition: filter 0.2s ease;
 }
 
-@media (max-width: 400px) {
-  .detail-layer .detail-title {
-    padding: 48px 8px 20px 16px;
-  }
-
-  .detail-layer .detail-content {
-    margin: 48px 16px 16px 0;
-  }
+.band-track {
+  display: inline-block;
+  white-space: nowrap;
+  font-family: var(--font-nelexium);
+  /* Scale with viewport; clamp ensures readability on all sizes */
+  font-size: 100%;
+  line-height: 2;
+  letter-spacing: 0.2em;
+  color: #fff;
+  /* Start shifted left by half so motion is rightward (–50% → 0) */
+  animation: marquee-right var(--speed) linear infinite;
 }
 
-/* ── Mobile vertical menu ── */
-@media (max-width: 600px) {
-  .menu-items {
-    flex-direction: row;
-    align-items: stretch;
-    flex: 1;
-    width: 100%;
-    min-height: 0;
-    margin-top: 16px;
-    gap: 8px;
-  }
-
-  .menu-items .menu-item {
-    writing-mode: vertical-lr;
-    flex: 1;
-    padding-left: 0;
-    line-height: 1;
-    text-align: end;
-  }
-
-  .menu-items .menu-prefix {
-    display: none;
-  }
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
 }
+
+/* ── Detail page ── */
+.detail-page-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none; /* allow clicks to pass through to the underlying content */
+}
+
+.detail-page {
+  position: absolute;
+  inset: 0;
+  /* No overflow:hidden here — the rotated bands must visually bleed off the edges.
+     Viewport clipping is handled by .content-wrapper's overflow:hidden. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  height: 90%;
+  bottom: 0;
+}
+
+.detail-band {
+  position: absolute;
+  left: -20%;
+  width: 140%;
+  transform: rotate(-12deg);
+  overflow: hidden;
+  /* vertical padding so ascenders/descenders aren't clipped */
+  padding: 10px 0;
+}
+
+.detail-band--top {
+  top: 0;
+  pointer-events: none;
+}
+
+.detail-band--bottom {
+  bottom: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  pointer-events: all;
+  transition: filter 0.2s ease;
+}
+
+.detail-band--bottom:hover {
+  filter: brightness(1.2);
+}
+
+.detail-page-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 28% 80px;   /* leaves room for the rotated bands */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 600px) { padding: 32% 40px; }
+  @media (max-width: 400px) { padding: 35% 24px; }
+}
+
+.section-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+/* ── Old detail layer stubs (no longer rendered) ── */
+.detail-layer { display: none; }

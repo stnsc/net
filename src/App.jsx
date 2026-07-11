@@ -1,17 +1,29 @@
 import './index.css'
 import { useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import DetailPage from './components/DetailPage'
+import Projects   from './sections/Projects'
+import Experience from './sections/Experience'
+import Contact    from './sections/Contact'
 
 const SECTIONS = [
-  { key: 'projects', name: 'Projects' },
-  { key: 'work',     name: 'Experience' },
-  { key: 'contact',  name: 'Contact' },
+  { key: 'projects', name: 'Projects',        Component: Projects   },
+  { key: 'work',     name: 'Work&Experience', Component: Experience },
+  { key: 'contact',  name: 'Contact',         Component: Contact    },
 ]
+
+// Different speeds create parallax effect between bands
+const BAND_SPEEDS = ['100s', '150s', '125s']
 
 const fade = (active, delay = 0) =>
   active
     ? { opacity: 0, scale: 1.15, filter: 'blur(14px)', transition: { duration: 0.3, delay } }
     : { opacity: 1, scale: 1,    filter: 'blur(0px)',  transition: { duration: 0.35 } }
+
+const bandFade = (active, delay = 0) =>
+  active
+    ? { opacity: 0, filter: 'blur(8px)', transition: { duration: 0.3, delay } }
+    : { opacity: 1, filter: 'blur(0px)', transition: { duration: 0.35 } }
 
 export default function App() {
   const wideRef   = useRef(null)
@@ -29,7 +41,7 @@ export default function App() {
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
   }
 
-  const activeLabel = SECTIONS.find(s => s.key === activeSection)?.name
+  const activeData = SECTIONS.find(s => s.key === activeSection)
 
   return (
     <div className="page">
@@ -56,8 +68,8 @@ export default function App() {
       <section id="content" className="content-element">
         <div className="content-wrapper">
 
-          {/* MENU LAYER – always mounted, items animate in-place, no layout shifts */}
-          <div className="content-layer">
+          {/* INTRO LAYER */}
+          <div className="content-layer intro-layer">
             <div className="intro">
               <div className="intro-greeting">
                 <motion.h1 className="nelexium" animate={fade(activeSection, 0)}>
@@ -73,54 +85,41 @@ export default function App() {
                 </motion.p>
               </div>
             </div>
-            <div className="menu-items">
-              {SECTIONS.map((section, i) =>
-                activeSection === section.key ? null : (
-                  <motion.h2
-                    key={section.key}
-                    layoutId={`nav-${section.key}`}
-                    className="nelexium menu-item"
-                    animate={fade(activeSection, 0.12 + i * 0.04)}
-                    onClick={() => !activeSection && setActiveSection(section.key)}
-                  >
-                    <span className="menu-prefix">{'>'}</span>
-                    {section.name}
-                  </motion.h2>
-                )
-              )}
-            </div>
           </div>
 
-          {/* DETAIL LAYER – absolutely overlays the menu, no layout interaction */}
-          <AnimatePresence>
-            {activeSection && (
-              <div key={activeSection} className="content-layer detail-layer">
-                <motion.h2
-                  layoutId={`nav-${activeSection}`}
-                  className="nelexium detail-title"
-                >
-                  /{activeLabel}
-                </motion.h2>
-
+          {/* SCROLLING MENU BANDS */}
+          <div className="menu-bands">
+            {SECTIONS.map((section, i) => {
+              /* Repeat label enough times so one copy exceeds any viewport width.
+                 Two copies in total: animation goes from translateX(-50%) → 0,
+                 which shifts the track by exactly one copy width */
+              const label = `${section.name.toUpperCase()} `
+              const half  = label.repeat(12)
+              return (
                 <motion.button
-                  className="back-btn nelexium"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0, transition: { delay: 0.45, duration: 0.3 } }}
-                  exit={{ opacity: 0, x: 20, transition: { duration: 0.2 } }}
-                  onClick={() => setActiveSection(null)}
+                  key={section.key}
+                  className="menu-band"
+                  style={{ '--speed': BAND_SPEEDS[i] }}
+                  animate={bandFade(activeSection, 0.08 + i * 0.06)}
+                  onClick={() => !activeSection && setActiveSection(section.key)}
+                  aria-label={`Go to ${section.name}`}
                 >
-                  BACK
+                  <div className="band-track">{half}{half}</div>
                 </motion.button>
+              )
+            })}
+          </div>
 
-                <motion.div
-                  className="detail-content"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1, transition: { delay: 0.4, duration: 0.4 } }}
-                  exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                >
-                  <p>Placeholder Page Content</p>
-                </motion.div>
-              </div>
+          {/* DETAIL PAGE */}
+          <AnimatePresence>
+            {activeSection && activeData && (
+              <DetailPage
+                key={activeSection}
+                label={activeData.name}
+                onBack={() => setActiveSection(null)}
+              >
+                <activeData.Component />
+              </DetailPage>
             )}
           </AnimatePresence>
 
