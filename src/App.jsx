@@ -17,13 +17,10 @@ const BAND_SPEEDS = ['100s', '150s', '125s']
 
 const fade = (active, delay = 0) =>
   active
-    ? { opacity: 0, scale: 1.15, filter: 'blur(14px)', transition: { duration: 0.3, delay } }
-    : { opacity: 1, scale: 1,    filter: 'blur(0px)',  transition: { duration: 0.35 } }
+    ? { opacity: 0, scale: 1.15, transition: { duration: 0.3, delay } }
+    : { opacity: 1, scale: 1,    transition: { duration: 0.35 } }
 
-const bandFade = (active, delay = 0) =>
-  active
-    ? { opacity: 0, filter: 'blur(8px)', transition: { duration: 0.3, delay } }
-    : { opacity: 1, filter: 'blur(0px)', transition: { duration: 0.35 } }
+
 
 export default function App() {
   const wideRef   = useRef(null)
@@ -78,10 +75,13 @@ export default function App() {
               </div>
               <div className="intro-text">
                 <motion.p animate={fade(activeSection, 0.04)}>
-                  My name is Stanescu Vladut-George and I am a web developer.
+                  My name is Stanescu Vladut-George and I am a web developer & motion designer.
                 </motion.p>
                 <motion.p animate={fade(activeSection, 0.08)}>
                   Click on any of the elements below to find out more about me:
+                </motion.p>
+                <motion.p animate={fade(activeSection, 0.08)}>
+                  Not yet fully polished on mobile, sorry!
                 </motion.p>
               </div>
             </div>
@@ -96,16 +96,19 @@ export default function App() {
               const label = `${section.name.toUpperCase()} `
               const half  = label.repeat(12)
               return (
-                <motion.button
+                <button
                   key={section.key}
-                  className="menu-band"
-                  style={{ '--speed': BAND_SPEEDS[i] }}
-                  animate={bandFade(activeSection, 0.08 + i * 0.06)}
+                  className={`menu-band ${activeSection ? 'hidden-band' : ''}`}
+                  style={{ 
+                    '--speed': BAND_SPEEDS[i],
+                    transitionDelay: activeSection ? `${0.08 + i * 0.06}s` : '0s'
+                  }}
                   onClick={() => !activeSection && setActiveSection(section.key)}
                   aria-label={`Go to ${section.name}`}
+                  disabled={!!activeSection}
                 >
                   <div className="band-track">{half}{half}</div>
-                </motion.button>
+                </button>
               )
             })}
           </div>
