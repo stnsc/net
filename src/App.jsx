@@ -80,12 +80,20 @@ export default function App() {
                 <motion.p animate={fade(activeSection, 0.08)}>
                   Click on any of the elements below to find out more about me:
                 </motion.p>
-                <motion.p animate={fade(activeSection, 0.08)}>
-                  Not yet fully polished on mobile, sorry!
-                </motion.p>
               </div>
+              {/* CV BUTTON */}
+              <motion.div className="cv-button-wrapper" animate={fade(activeSection, 0.04)}>
+                <div className="cv-button">
+                  <a href="/cv.pdf" target="_blank" rel="noopener noreferrer">
+                    View CV
+                  </a>
+                </div>
+
+              </motion.div>
             </div>
           </div>
+
+          
 
           {/* SCROLLING MENU BANDS */}
           <div className="menu-bands">
