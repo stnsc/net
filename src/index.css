@@ -6,10 +6,17 @@
   font-display: swap;
 }
 
+
 :root {
   --font-nelexium: 'Nelexium', sans-serif;
   --font-space: 'Space Grotesk', sans-serif;
 }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 
 .nelexium {
   font-family: var(--font-nelexium);
@@ -81,7 +88,7 @@ body {
   position: absolute;
   right: 50%;
   transform: translateX(50%) rotate(9deg);
-  top: 5%;
+  top: 55px;
   background: none;
   border: none;
   color: rgba(255, 255, 255, 0.65);
@@ -216,6 +223,11 @@ body {
   pointer-events: none;
   user-select: none;
   transition: opacity 0.4s ease;
+
+  @media (max-width: 700px) {
+    font: 8px/1 var(--font-nelexium);
+    left: 0;
+  }
 }
 
 @starting-style {
@@ -324,6 +336,33 @@ body {
   padding-right: 20px;
 }
 
+.cv-button-wrapper {
+  margin-top: 20px;
+  max-width: auto;
+  display: flex;
+}
+
+.cv-button { 
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 10px 20px;
+  width: auto;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.cv-button:hover{
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.cv-button a {
+  color: white;
+}
+
 /* ── Scrolling menu bands ── */
 .menu-bands {
   position: absolute;
@@ -356,15 +395,11 @@ body {
   padding: 10px 0;
   cursor: pointer;
   pointer-events: auto;
-  transition: opacity 0.35s ease, filter 0.2s ease;
-  opacity: 1;
+  will-change: opacity, transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.menu-band.hidden-band {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
 
 .menu-band:disabled {
   pointer-events: none;
