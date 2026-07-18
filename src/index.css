@@ -6,10 +6,17 @@
   font-display: swap;
 }
 
+
 :root {
   --font-nelexium: 'Nelexium', sans-serif;
   --font-space: 'Space Grotesk', sans-serif;
 }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 
 .nelexium {
   font-family: var(--font-nelexium);
@@ -388,15 +395,11 @@ body {
   padding: 10px 0;
   cursor: pointer;
   pointer-events: auto;
-  transition: opacity 0.35s ease, filter 0.2s ease;
-  opacity: 1;
+  will-change: opacity, transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.menu-band.hidden-band {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
 
 .menu-band:disabled {
   pointer-events: none;

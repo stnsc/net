@@ -84,7 +84,7 @@ export default function App() {
               {/* CV BUTTON */}
               <motion.div className="cv-button-wrapper" animate={fade(activeSection, 0.04)}>
                 <div className="cv-button">
-                  <a href="/cv.pdf" target="_blank" rel="noopener noreferrer">
+                  <a href="/CV.pdf" target="_blank" rel="noopener noreferrer">
                     View CV
                   </a>
                 </div>
@@ -104,19 +104,19 @@ export default function App() {
               const label = `${section.name.toUpperCase()} `
               const half  = label.repeat(12)
               return (
-                <button
+                <motion.button
                   key={section.key}
-                  className={`menu-band ${activeSection ? 'hidden-band' : ''}`}
+                  className="menu-band"
                   style={{ 
-                    '--speed': BAND_SPEEDS[i],
-                    transitionDelay: activeSection ? `${0.08 + i * 0.06}s` : '0s'
+                    '--speed': BAND_SPEEDS[i]
                   }}
+                  animate={fade(activeSection, 0.08 + i * 0.06)}
                   onClick={() => !activeSection && setActiveSection(section.key)}
                   aria-label={`Go to ${section.name}`}
                   disabled={!!activeSection}
                 >
                   <div className="band-track">{half}{half}</div>
-                </button>
+                </motion.button>
               )
             })}
           </div>
