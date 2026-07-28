@@ -5,6 +5,20 @@ import { motion, AnimatePresence } from 'framer-motion'
 // Supports either a text title or a custom logo component based on choosing.
 const PROJECTS = [
   {
+    id: 'mix',
+    title: 'MIX ASSISTANT',
+    logo: null,
+    subtitle: 'Side Project',
+    description: 'Project made for my music hobby. It is a website system that recommends music mixing based on tempo and pitch, with automatic adjustments.',
+    video: '/projects/mix-assistant.mp4',
+    image: null,
+    link: {
+      title: 'Visit Website!',
+      url: 'https://mix-assistant.stnsc.net'
+    },
+    tags: ['TypeScript', 'React', 'Node.js', 'Vite', 'Essentia.js']
+  },
+  {
     id: 'ae1',
     title: 'AutoService v1.0',
     logo: null,
