@@ -5,6 +5,24 @@ import { motion, AnimatePresence } from 'framer-motion'
 // Supports either a text title or a custom logo component based on choosing.
 const PROJECTS = [
   {
+    id: 'cloud',
+    title: 'cloud.',
+    logo: (
+      <div>
+        <img src="/projects/cloud_logo.png" alt="Cloud Logo" style={{ maxWidth: '240px', height: 'auto' }} />
+      </div>
+    ),
+    subtitle: 'Side Project',
+    description: 'Project made to test out cloud storage capabilities. It is a limited access website that allows users to store and manage their files in the cloud.',
+    video: '/projects/cloud.mp4',
+    image: null,
+    link: {
+      title: 'Visit Website!',
+      url: 'https://cloud.stnsc.net'
+    },
+    tags: ['TypeScript', 'React', 'Vite', 'framer-motion', 'Cloudflare R2, Workers, D1']
+  },
+  {
     id: 'mix',
     title: 'MIX ASSISTANT',
     logo: null,
@@ -37,7 +55,7 @@ const PROJECTS = [
     title: 'AutoService v2.0',
     logo: (
       <div className="autoservice-logo">
-        <img src="/projects/as_logo.png" alt="AutoService v2.0 Logo" className="project-logo" />
+        <img src="/projects/as_logo.png" alt="AutoService v2.0 Logo" />
       </div>
     ),
     subtitle: 'The v2.0',
