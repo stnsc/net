@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 
 /**
@@ -9,6 +10,31 @@ import { motion } from 'framer-motion'
  * transform: rotate(-12deg) is never overridden by framer-motion.
  */
 export default function DetailPage({ label, onBack, children }) {
+  const contentRef = useRef(null)
+
+  useEffect(() => {
+    const content = contentRef.current
+    if (!content) return
+
+    const updateMask = () => {
+      const remaining = Math.max(0, content.scrollHeight - content.clientHeight - content.scrollTop)
+      const fadeSize = Math.min(40, content.clientHeight / 4)
+      content.style.setProperty('--scroll-fade-top', Math.min(fadeSize, Math.max(0, content.scrollTop)) + 'px')
+      content.style.setProperty('--scroll-fade-bottom', Math.min(fadeSize, remaining) + 'px')
+    }
+
+    updateMask()
+    content.addEventListener('scroll', updateMask, { passive: true })
+    const observer = new ResizeObserver(updateMask)
+    observer.observe(content)
+    for (const child of content.children) observer.observe(child)
+
+    return () => {
+      content.removeEventListener('scroll', updateMask)
+      observer.disconnect()
+    }
+  }, [children])
+
   const titleHalf = `${label.toUpperCase()} `.repeat(12)
   const backHalf  = '< BACK '.repeat(20)
 
@@ -30,6 +56,7 @@ export default function DetailPage({ label, onBack, children }) {
 
         {/* Content */}
         <motion.div
+          ref={contentRef}
           className="detail-page-content"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { duration: 0.4, delay: 0.2 } }}

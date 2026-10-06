@@ -25,10 +25,9 @@ export default function Contact() {
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       <div className="contact-header">
-        <span className="contact-subtitle">GET IN TOUCH</span>
         <p className="contact-flare">
           Have an idea, project, or opportunity you'd like to discuss? 
-          Reach out directly, and let's create something together.
+          Reach out at the email or phone number below, and I'll get back to you as soon as possible.
         </p>
       </div>
 
