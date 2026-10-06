@@ -77,6 +77,9 @@ export default function App() {
                 <motion.p animate={fade(activeSection, 0.04)}>
                   My name is Stanescu Vladut-George and I am a web developer & motion designer.
                 </motion.p>
+                <motion.p animate={fade(activeSection, 0.06)}>
+                  <b>Currently looking for work!</b>
+                </motion.p>
                 <motion.p animate={fade(activeSection, 0.08)}>
                   Click on any of the elements below to find out more about me:
                 </motion.p>
